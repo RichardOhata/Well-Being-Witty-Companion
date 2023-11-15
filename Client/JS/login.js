@@ -14,11 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
 const post = (data) => {
     const xhttp = new XMLHttpRequest();
     xhttp.withCredentials = true;
-    xhttp.open("POST", "http://localhost:8000", true); // Change endpoint later
+    xhttp.open("POST", "http://localhost:8000/" + "assignments/assignment1/api/login", true); // Change endpoint later
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState === XMLHttpRequest.DONE) {
-            console.log(this.responseText)
+            const responseText = document.getElementById("responseText")
+            responseText.innerHTML = xhttp.responseText
         }
     }
     xhttp.send(JSON.stringify(data))

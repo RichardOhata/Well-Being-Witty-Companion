@@ -8,3 +8,12 @@ const createUserTable = `
     token VARCHAR(255), 
     admin BOOLEAN DEFAULT FALSE
 );`
+const SQL_INSERT_USER = 'INSERT INTO users (username, password, email) VALUES (?, ?, ?)';
+
+const SQL_SELECT_USER = 'SELECT * FROM users WHERE email = ? AND password = ?';
+
+module.exports = {
+    createUserTable,
+    SQL_INSERT_USER,
+    SQL_SELECT_USER
+}
