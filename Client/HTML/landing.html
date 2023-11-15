@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Well-Being Witty Companion</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        function fetchJoke() {
+            var age = document.getElementById('ageInput').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:5000/get-joke", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    document.getElementById('jokeDisplay').innerText = response.joke;
+                }
+            };
+            var data = JSON.stringify({ "age": age });
+            xhr.send(data);
+        }
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <header class="bg-green-500 text-white text-center p-6">
+        <h1 class="text-3xl font-bold">Well-Being Witty Companion</h1>
+        <p class="text-xl">Your personal health and mood booster!</p>
+    </header>
+
+    <section id="intro" class="py-8 px-4 text-center">
+        <h2 class="text-2xl font-bold mb-3">Welcome to a New Era of Well-Being</h2>
+        <p>Experience a unique blend of health advice and mood-boosting conversations.</p>
+    </section>
+
+
+    <section id="ai-demo" class="text-center py-8">
+        <h3 class="text-xl font-semibold mb-2">Get a Joke Based on Your Age</h3>
+        <input type="number" id="ageInput" class="border p-2" placeholder="Enter your age">
+        <button onclick="fetchJoke()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">Get Joke</button>
+        <p id="jokeDisplay" class="mt-4"></p>
+    </section>
+
+    <footer class="bg-gray-800 text-white text-center p-4">
+        <p>Contact us at: contact@wittycompanion.com</p>
+    </footer>
+</body>
+</html>
