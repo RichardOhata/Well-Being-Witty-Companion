@@ -72,10 +72,8 @@ app.post('/assignments/assignment1/api/create', (req, res) => {
 });
 
 app.post('/assignments/assignment1/api/login', (req, res) => {
-    console.log(req.body)
     const values = [req.body.username]; // Changed from email to username
     db.query(query.SQL_SELECT_USER, values, (err, result) => {
-        console.log(result)
         if (err) {
             const response = {
                 success: false,

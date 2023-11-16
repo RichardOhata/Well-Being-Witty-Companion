@@ -18,8 +18,12 @@ const post = (data) => {
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState === XMLHttpRequest.DONE) {
-            const responseText = document.getElementById("responseText")
-            responseText.innerHTML = xhttp.responseText
+            if (xhttp.status === 200) {
+                window.location.href = "landing.html"
+            } else {
+                const responseText = document.getElementById("responseText")
+                responseText.innerHTML = xhttp.responseText
+            }
         }
     }
     xhttp.send(JSON.stringify(data))
