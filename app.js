@@ -1,6 +1,8 @@
 const express = require('express');
 const mysql = require('mysql');
 const query = require('./query')
+const bcrypt = require('bcrypt')
+const saltRounds = 10;
 const app = express();
 
 app.use(express.json());
@@ -42,10 +44,11 @@ app.use(function (req, res, next) {
 
 
 app.post('/assignments/assignment1/api/create', (req, res) => {
-
     console.log("hi there")
     console.log(req.body)
-    const values = [req.body.username, req.body.password, req.body.email];
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+    const values = [req.body.username, hashedPassword, req.body.email];
 
     db.query(query.SQL_INSERT_USER, values, (err, result) => {
         if (err) {
@@ -70,8 +73,9 @@ app.post('/assignments/assignment1/api/create', (req, res) => {
 
 app.post('/assignments/assignment1/api/login', (req, res) => {
     console.log(req.body)
-    const values = [req.body.email, req.body.password]; // Change from email to username depending on what Amir wants
+    const values = [req.body.username]; // Changed from email to username
     db.query(query.SQL_SELECT_USER, values, (err, result) => {
+        console.log(result)
         if (err) {
             const response = {
                 success: false,
@@ -84,17 +88,25 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
             const response = {
                 success: false,
                 error: "Invalid credentials",
-                message: "Email or password is incorrect.",
+                message: "No such user exists.",
             };
-
             res.status(401).json(response);
         } else {
+            if (bcrypt.compareSync(req.body.password, result[0].password)) {
             const response = {
                 success: true,
                 message: 'Login successful',
                 user: result[0], // Assuming result is an array with at most one user
             };
             res.status(200).json(response);
+        } else {
+            const response = {
+                success: false,
+                error: "Invalid credentials",
+                message: "Username or password is incorrect",
+            };
+            res.status(401).json(response);
+        }
         }
     });
 });
