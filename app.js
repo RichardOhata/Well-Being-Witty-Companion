@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql');
 const query = require('./query')
@@ -8,11 +9,18 @@ const app = express();
 app.use(express.json());
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'compcom_nodemysql'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
 });
+
+// const db = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: '',
+//     database: 'compcom_nodemysql'
+// });
 
 db.connect((err) => {
     if (err) {
@@ -44,7 +52,6 @@ app.use(function (req, res, next) {
 
 
 app.post('/assignments/assignment1/api/create', (req, res) => {
-    console.log("hi there")
     console.log(req.body)
     const salt = bcrypt.genSaltSync(saltRounds);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);

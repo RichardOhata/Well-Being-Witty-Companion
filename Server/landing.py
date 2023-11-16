@@ -1,7 +1,10 @@
-
 from flask import Flask, request, jsonify
-from flask_cors import CORS  # Corrected import
+from flask_cors import CORS
 import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -12,9 +15,13 @@ def get_joke():
     age = data['age']
     joke_query = f"Tell me a joke suitable for someone aged {age}."
 
+    api_token = os.getenv("HUGGINGFACE_API_TOKEN")
+    if not api_token:
+        return jsonify({"error": "API token not found"}), 500
+
     response = requests.post(
         "https://api-inference.huggingface.co/models/openai-gpt",
-        headers={"Authorization": "Bearer your_api_token"},
+        headers={"Authorization": f"Bearer {api_token}"},
         json={"inputs": joke_query}
     )
 
