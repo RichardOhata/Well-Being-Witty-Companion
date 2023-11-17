@@ -49,24 +49,18 @@ app.use(function (req, res, next) {
 const jwtAuthentication = (req, res, next) => {
     const token = req.cookies.token;
     console.log(token)
-    if (!token) {
-        return res.status(401).json({
+    try {
+        const user = jwt.verify(token, secretKey);
+        req.user = user
+        next()
+    } catch (err) {
+        res.clearCookie('token');
+        res.status(401).json({
             success: false,
             error: "Unauthorized",
-            message: "No token provided.",
+            message: "Failed to authenticate token.",
         });
     }
-    jwt.verify(token, secretKey, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({
-                success: false,
-                error: "Unauthorized",
-                message: "Failed to authenticate token.",
-            });
-        }
-        req.user = decoded;
-        next();
-    });
 }
 
 
@@ -126,6 +120,11 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
                 const token = jwt.sign(user, secretKey, {
                     expiresIn: '1hr'
                 })
+                const response = {
+                    success: true,
+                    message: 'Login successful',
+                    user: result[0], // Assuming result is an array with at most one user
+                };
                 res.cookie('token', token, {
                     path:"/",
                     secure: true,
@@ -133,12 +132,7 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
                     sameSite: "none",
                     // maxAge: 3600000,
                     expires: new Date(Date.now() + 3600000),
-                }) // Change secure to true if hosted
-                const response = {
-                    success: true,
-                    message: 'Login successful',
-                    user: result[0], // Assuming result is an array with at most one user
-                };
+                })
                 res.status(200).json(response);
             } else {
                 const response = {
