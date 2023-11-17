@@ -1,12 +1,16 @@
 const express = require('express');
 const mysql = require('mysql');
 const query = require('./query')
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt')
 const saltRounds = 10;
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
+const secretKey = ' 256-bit-secret' // Change this to more secure key in the future
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -41,6 +45,30 @@ app.use(function (req, res, next) {
     }
     next();
 });
+
+const jwtAuthentication = (req, res, next) => {
+    const token = req.cookies.token;
+    console.log(token)
+    if (!token) {
+        return res.status(401).json({
+            success: false,
+            error: "Unauthorized",
+            message: "No token provided.",
+        });
+    }
+    jwt.verify(token, secretKey, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                success: false,
+                error: "Unauthorized",
+                message: "Failed to authenticate token.",
+            });
+        }
+        req.user = decoded;
+        next();
+    });
+}
+
 
 
 app.post('/assignments/assignment1/api/create', (req, res) => {
@@ -91,24 +119,44 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
             res.status(401).json(response);
         } else {
             if (bcrypt.compareSync(req.body.password, result[0].password)) {
-            const response = {
-                success: true,
-                message: 'Login successful',
-                user: result[0], // Assuming result is an array with at most one user
-            };
-            res.status(200).json(response);
-        } else {
-            const response = {
-                success: false,
-                error: "Invalid credentials",
-                message: "Username or password is incorrect",
-            };
-            res.status(401).json(response);
-        }
+                const user = {
+                    username: result[0].username,
+                    email: result[0].email,
+                }
+                const token = jwt.sign(user, secretKey, {
+                    expiresIn: '1hr'
+                })
+                res.cookie('token', token, {
+                    path:"/",
+                    secure: true,
+                    httpOnly: true,
+                    sameSite: "none",
+                    // maxAge: 3600000,
+                    expires: new Date(Date.now() + 3600000),
+                }) // Change secure to true if hosted
+                const response = {
+                    success: true,
+                    message: 'Login successful',
+                    user: result[0], // Assuming result is an array with at most one user
+                };
+                res.status(200).json(response);
+            } else {
+                const response = {
+                    success: false,
+                    error: "Invalid credentials",
+                    message: "Username or password is incorrect",
+                };
+                res.status(401).json(response);
+            }
         }
     });
 });
 
-
+// For Testing
+app.get('/test', jwtAuthentication, (req, res) => {
+    res.send({
+        apple: 123
+    })
+})  
 
 app.listen(8000);
