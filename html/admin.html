@@ -1,0 +1,123 @@
+<!-- admin.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Page</title>
+    <link rel="stylesheet" type="text/css" href="../css/styles.css" />
+  </head>
+  <body>
+    <h1>Admin Page</h1>
+
+    <div id="feedback"></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>API Calls</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody"></tbody>
+    </table>
+
+    <button id="deleteUserBtn" onclick="deleteUser()" disabled>Delete User</button>
+    <button onclick="openCreateUserPage()">Create User</button>
+
+    <script>
+      // Fetch users and populate the table
+
+      async function fetchUsers() {
+        try {
+          const response = await fetch("http://localhost:3000/users/getUsers", {
+            method: "GET",
+            credentials: "include",
+          });
+
+          if (response.ok) {
+            const users = await response.json();
+            console.log(users);
+            displayUsers(users);
+          } else {
+            console.error("Failed to fetch users");
+          }
+        } catch (error) {
+          console.error("Error:", error.message);
+        }
+      }
+      fetchUsers();
+
+      function displayUsers(users) {
+        const tableBody = document.getElementById("userTableBody");
+        tableBody.innerHTML = "";
+
+        users.forEach((user) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+        <td>${user.username}</td>
+        <td>${user.email}</td>
+        <td>${user.apicalls}</td>
+        <td><input type="radio" name="userRadio" data-id="${user.id}" onchange="updateDeleteButton()"></td>
+      `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      function updateDeleteButton() {
+        const deleteButton = document.getElementById("deleteUserBtn");
+        const checkedRadio = document.querySelector(
+          'input[type="radio"]:checked'
+        );
+
+        deleteButton.disabled = !checkedRadio;
+      }
+      function openCreateUserPage() {
+        window.open("signup.html", "_blank", "width=400,height=400");
+      }
+      async function deleteUser() {
+        const checkedRadio = document.querySelector(
+          'input[type="radio"]:checked'
+        );
+        const feedbackDiv = document.getElementById("feedback");
+
+        if (!checkedRadio) {
+          feedbackDiv.textContent = "Please select a user to delete.";
+          return;
+        }
+
+        const id = checkedRadio.getAttribute("data-id");
+
+
+        try {
+          const response = await fetch("http://localhost:3000/users/delete", {
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id
+            }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            feedbackDiv.textContent = `Failed to delete user. Error: ${errorData.message}`;
+          } else {
+            feedbackDiv.textContent = "User deleted successfully!";
+          }
+        } catch (error) {
+          feedbackDiv.textContent = `Error: ${error.message}`;
+        }
+
+        // Refresh the user table after deletion
+        fetchUsers();
+        updateDeleteButton();
+      }
+    </script>
+
+  </body>
+</html>
