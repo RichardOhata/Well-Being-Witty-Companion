@@ -14,7 +14,7 @@ app.use(cookieParser());
 const secretKey = require('crypto').randomBytes(64).toString('hex') 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
-    user: process.env.DB_USER,
+    user: process.env.DB_USER, 
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
 });
@@ -99,7 +99,7 @@ app.post('/assignments/assignment1/api/create', (req, res) => {
 });
 
 app.post('/assignments/assignment1/api/login', (req, res) => {
-    const values = [req.body.username]; // Changed from email to username
+    const values = [req.body.email]; 
     db.query(query.SQL_SELECT_USER, values, (err, result) => {
         if (err) {
             const response = {
@@ -145,7 +145,7 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
                 const response = {
                     success: false,
                     error: "Invalid credentials",
-                    message: "Username or password is incorrect",
+                    message: "Email or password is incorrect",
                 };
                 res.status(401).json(response);
             }
@@ -156,7 +156,7 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
 // Example of how to access payload data 
 // Not logged in user can't call this where a logged in user can
 app.get('/test', jwtAuthentication, (req, res) => {
-    console.log(req.payload)
+    console.log(req.payload) // view payload data from cookie
     res.send({
         apple: 123
     })
