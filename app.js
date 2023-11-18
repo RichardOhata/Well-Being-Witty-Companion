@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-const secretKey = require('crypto').randomBytes(64).toString('hex') // Change this to more secure key in the future
+const secretKey = require('crypto').randomBytes(64).toString('hex') 
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -49,8 +49,8 @@ app.use(function (req, res, next) {
 const jwtAuthentication = (req, res, next) => {
     const token = req.cookies.token;
     try {
-        const user = jwt.verify(token, secretKey);
-        req.user = user
+        const payload = jwt.verify(token, secretKey);
+        req.payload = payload
         next()
     } catch (err) {
         res.clearCookie('token');
@@ -110,11 +110,13 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
             res.status(401).json(response);
         } else {
             if (bcrypt.compareSync(req.body.password, result[0].password)) {
-                const user = {
-                    username: result[0].username,
+                const payload = {
+                    sub: result[0].id,
                     email: result[0].email,
+                    username: result[0].username,
+                    api_calls: result[0].apicalls,
                 }
-                const token = jwt.sign(user, secretKey, {
+                const token = jwt.sign(payload, secretKey, {
                     expiresIn: '1hr',
                     algorithm: 'HS256'
                 })
@@ -143,9 +145,10 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
     });
 });
 
-// For Testing
+// Example of how to access payload data 
+// Not logged in user can't call this where a logged in user can
 app.get('/test', jwtAuthentication, (req, res) => {
-    console.log(req.user)
+    console.log(req.payload)
     res.send({
         apple: 123
     })
