@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-const secretKey = ' 256-bit-secret' // Change this to more secure key in the future
+const secretKey = require('crypto').randomBytes(64).toString('hex') // Change this to more secure key in the future
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -48,7 +48,6 @@ app.use(function (req, res, next) {
 
 const jwtAuthentication = (req, res, next) => {
     const token = req.cookies.token;
-    console.log(token)
     try {
         const user = jwt.verify(token, secretKey);
         req.user = user
@@ -66,8 +65,6 @@ const jwtAuthentication = (req, res, next) => {
 
 
 app.post('/assignments/assignment1/api/create', (req, res) => {
-    console.log("hi there")
-    console.log(req.body)
     const salt = bcrypt.genSaltSync(saltRounds);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
     const values = [req.body.username, hashedPassword, req.body.email];
@@ -118,7 +115,8 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
                     email: result[0].email,
                 }
                 const token = jwt.sign(user, secretKey, {
-                    expiresIn: '1hr'
+                    expiresIn: '1hr',
+                    algorithm: 'HS256'
                 })
                 const response = {
                     success: true,
@@ -130,8 +128,7 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
                     secure: true,
                     httpOnly: true,
                     sameSite: "none",
-                    // maxAge: 3600000,
-                    expires: new Date(Date.now() + 3600000),
+                    maxAge: 3600000,
                 })
                 res.status(200).json(response);
             } else {
@@ -148,6 +145,7 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
 
 // For Testing
 app.get('/test', jwtAuthentication, (req, res) => {
+    console.log(req.user)
     res.send({
         apple: 123
     })
