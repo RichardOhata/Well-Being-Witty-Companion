@@ -11,21 +11,22 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-const secretKey = require('crypto').randomBytes(64).toString('hex') 
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER, 
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-});
+// const secretKey = require('crypto').randomBytes(64).toString('hex') 
+const secretKey = "---" 
 
 // const db = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: '',
-//     database: 'compcom_nodemysql'
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER, 
+//     password: process.env.DB_PASSWORD,
+//     database: process.env.DB_DATABASE,
 // });
 
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '-',
+    database: '-'
+}); 
 db.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
@@ -41,10 +42,11 @@ db.query(query.createUserTable, (err, result) => {
         console.log('Table "users" created successfully');
     }
 });
+console.log("")
 
 
 app.use(function (req, res, next) {
-    res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500"); // Change later
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5500"); // Change later
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
     res.setHeader("Access-Control-Allow-Credentials", "true")
@@ -71,8 +73,7 @@ const jwtAuthentication = (req, res, next) => {
 }
 
 
-
-app.post('/assignments/assignment1/api/create', (req, res) => {
+app.post('/create', (req, res) => {
     const salt = bcrypt.genSaltSync(saltRounds);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
     const values = [req.body.username, hashedPassword, req.body.email];
@@ -98,7 +99,9 @@ app.post('/assignments/assignment1/api/create', (req, res) => {
     });
 });
 
-app.post('/assignments/assignment1/api/login', (req, res) => {
+app.post('/login', (req, res) => {
+    console.log("new3")
+
     const values = [req.body.email]; 
     db.query(query.SQL_SELECT_USER, values, (err, result) => {
         if (err) {
@@ -122,9 +125,9 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
                     sub: result[0].id,
                     email: result[0].email,
                     username: result[0].username,
-                    api_calls: result[0].apicalls,
-                }
-                const token = jwt.sign(payload, secretKey, {
+                    apiCalls: result[0].apicalls
+                                }
+                const access_token = jwt.sign(payload, secretKey, {
                     expiresIn: '1hr',
                     algorithm: 'HS256'
                 })
@@ -133,7 +136,7 @@ app.post('/assignments/assignment1/api/login', (req, res) => {
                     message: 'Login successful',
                     user: result[0], // Assuming result is an array with at most one user
                 };
-                res.cookie('token', token, {
+                res.cookie('access_token', access_token, {
                     path:"/",
                     secure: true,
                     httpOnly: true,
@@ -160,6 +163,13 @@ app.get('/test', jwtAuthentication, (req, res) => {
     res.send({
         apple: 123
     })
-})  
+})
 
-app.listen(8000);
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
+  });
+
+app.listen(8000, () => {
+    console.log('Server is running on http://localhost:8000');
+  });
+  

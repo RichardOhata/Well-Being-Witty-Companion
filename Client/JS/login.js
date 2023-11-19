@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm')
+
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault()
         const email = document.getElementById('email').value
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const post = (data) => {
     const xhttp = new XMLHttpRequest();
     xhttp.withCredentials = true;
-    xhttp.open("POST", "http://localhost:8000/" + "assignments/assignment1/api/login", true); // Change endpoint later
+    xhttp.open("POST", "https://nest.comp4537.com" + "/auth/login", true); 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState === XMLHttpRequest.DONE) {

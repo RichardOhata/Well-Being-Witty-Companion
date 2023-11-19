@@ -1,0 +1,31 @@
+<!-- admin.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Page</title>
+    <link rel="stylesheet" type="text/css" href="../CSS/admin.css" />
+    <script src="../JS/admin.js"></script>
+  </head>
+  <body>
+    <h1>Admin Page</h1>
+
+    <div id="feedback"></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>API Calls</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody"></tbody>
+    </table>
+
+    <button id="deleteUserBtn" disabled>Delete User</button>
+    <button id="createUserBtn" >Create User</button>
+  </body>
+</html>
