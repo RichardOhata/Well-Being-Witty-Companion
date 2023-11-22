@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm')
+    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    forgotPasswordLink.addEventListener('click', openForgotPasswordWindow);
 
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault()
@@ -12,10 +14,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+function openForgotPasswordWindow() {
+    // Adjust the window features as needed
+    const width = 400;
+    const height = 300;
+    const left = (window.innerWidth - width) / 2;
+    const top = (window.innerHeight - height) / 2;
+
+    window.open('forgot-password.html', 'ForgotPasswordWindow', `width=${width},height=${height},left=${left},top=${top}`);
+}
+
 const post = (data) => {
     const xhttp = new XMLHttpRequest();
     xhttp.withCredentials = true;
-    xhttp.open("POST", "https://nest.comp4537.com" + "/auth/login", true); 
+    const localUrl = 'http://localhost:3000' + '/auth/login';
+    const hostedUrl = "https://nest.comp4537.com" + "/auth/login"
+
+    xhttp.open("POST", hostedUrl, true); 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState === XMLHttpRequest.DONE) {

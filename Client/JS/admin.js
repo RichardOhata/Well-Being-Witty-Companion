@@ -17,7 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function fetchUsers() {
     try {
-        const response = await fetch("https://nest.comp4537.com" + "/users/getUsers", {
+        const localUrl = 'http://localhost:3000' + '/users/getUsers'
+        const hostedUrl = "https://nest.comp4537.com" + "/users/getUsers"
+
+        const response = await fetch(hostedUrl, {
             method: "GET",
             credentials: "include",
         });
@@ -71,7 +74,9 @@ async function deleteUser() {
 
     const id = checkedRadio.getAttribute("data-id");
     try {
-        const response = await fetch("https://nest.comp4537.com" + "/users/delete", {
+        const localUrl = 'http://localhost:3000' + '/users/delete'
+        const hostedUrl = "https://nest.comp4537.com" + "/users/delete"
+        const response = await fetch(hostedUrl, {
             method: "DELETE",
             credentials: "include",
             headers: {
