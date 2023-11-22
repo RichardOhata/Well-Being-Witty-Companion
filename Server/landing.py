@@ -28,7 +28,7 @@ def get_joke():
 def get_health_tip():
     data = request.json
     age = data['age']
-    health_tip_query = f"A health tip for {age} year olds:"
+    health_tip_query = f"A health tip for {age} year old:"
     print(health_tip_query)
 
     # Encode the input text and generate a health tip
