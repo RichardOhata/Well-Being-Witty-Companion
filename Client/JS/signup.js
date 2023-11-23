@@ -16,9 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
 const post = (data) => {
     const xhttp = new XMLHttpRequest();
     xhttp.withCredentials = true;
-    const localUrl = 'http://localhost:3000' + '/users/create'
-    // const hostedUrl = "https://nest.comp4537.com" + "/users/create"
-    xhttp.open("POST", hostedUrl, true); // Change endpoint later
+    // const localUrl = 'http://localhost:3000' + '/users/create'
+    const hostedUrl = "https://nest.comp4537.com" + "/users/create"
+
+    // xhttp.open("POST", localUrl, true); // Change endpoint later
+    xhttp.open("POST", hostedUrl, true);
+
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState === XMLHttpRequest.DONE) {

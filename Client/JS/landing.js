@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       var age = document.getElementById('ageInput').value;
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "http://127.0.0.1:5000/" + "get-joke", true);
+      xhr.withCredentials = true;
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.onreadystatechange = function () {
           if (xhr.readyState === 4 && xhr.status === 200) {
@@ -76,10 +77,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const logout = async () => {
     window.location.href = "login.html";
     try {
-      const localUrl = 'http://localhost:3000' + '/auth/logout'
-      const hostedUrl = "https://nest.comp4537.com" + "/auth/logout"
+      const localUrl = 'http://localhost:3000' + '/logout'
+      // const hostedUrl = "https://nest.comp4537.com" + "/auth/logout"
 
-      const response = await fetch(hostedUrl, {
+      const response = await fetch(localUrl, 
+      // const response = await fetch(hostedUrl,
+        {
         method: "GET",
         credentials: "include",
       });
@@ -101,10 +104,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   const getProfile = async () => {
     try {
-      const localUrl = 'http://localhost:3000' + '/auth/profile'
+      // const localUrl = 'http://localhost:3000' + '/auth/profile'
       const hostedUrl = "https://nest.comp4537.com" + "/auth/profile"
 
-      const response = await fetch(hostedUrl, {
+      // const response = await fetch(localUrl, 
+      const response = await fetch(hostedUrl,
+        {
         method: "GET",
         credentials: "include",
       });
@@ -133,10 +138,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Placeholder function, replace with your actual authorization logic
   const isAdmin = async () => {
     try {
-      const localUrl = 'http://localhost:3000' + '/users/getRole'
+      // const localUrl = 'http://localhost:3000' + '/users/getRole'
       const hostedUrl = "https://nest.comp4537.com" + "/users/getRole"
 
-      const response = await fetch(hostedUrl, {
+      // const response = await fetch(localUrl, 
+      const response = await fetch(hostedUrl,
+        {
         method: "GET",
         credentials: "include",
       });

@@ -11,8 +11,9 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+
 // const secretKey = require('crypto').randomBytes(64).toString('hex') 
-const secretKey = "---" 
+const secretKey = process.env.JWT_SECRET_KEY
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -57,7 +58,7 @@ app.use(function (req, res, next) {
 });
 
 const jwtAuthentication = (req, res, next) => {
-    const token = req.cookies.token;
+    const token = req.cookies.access_token;
     console.log("token", token)
     try {
         const payload = jwt.verify(token, secretKey);

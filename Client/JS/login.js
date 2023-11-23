@@ -27,10 +27,11 @@ function openForgotPasswordWindow() {
 const post = (data) => {
     const xhttp = new XMLHttpRequest();
     xhttp.withCredentials = true;
-    const localUrl = 'http://localhost:3000' + '/auth/login';
+    // const localUrl = 'http://localhost:3000' + '/login';
     const hostedUrl = "https://nest.comp4537.com" + "/auth/login"
 
-    xhttp.open("POST", hostedUrl, true); 
+    // xhttp.open("POST", localUrl, true); 
+    xhttp.open("POST", hostedUrl, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState === XMLHttpRequest.DONE) {

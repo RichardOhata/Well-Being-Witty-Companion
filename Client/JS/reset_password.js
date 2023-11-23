@@ -28,10 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
 const resetPasswordRequest = async (data, resetToken) => {
     try {
         console.log(resetToken);
-        const localUrl = 'http://localhost:3000/users' + '/reset-password';
+        // const localUrl = 'http://localhost:3000/users' + '/reset-password';
         const hostedUrl = 'https://nest.comp4537.com/users' + '/reset-password';
 
-        const response = await fetch(hostedUrl, {
+        // const response = await fetch(localUrl, 
+        const response = await fetch(hostedUrl,
+            {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
