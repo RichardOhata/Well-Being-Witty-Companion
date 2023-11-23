@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const deleteUserButton = document.getElementById("deleteUserBtn");
     const createUserButton = document.getElementById("createUserBtn");
+    const backBtn = document.getElementById('backBtn');
 
     deleteUserButton.addEventListener("click", (event) => {
         deleteUser();
@@ -9,6 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     createUserButton.addEventListener("click", (event) => {
         openCreateUserPage();
+    });
+
+    backBtn.addEventListener("click", (event) => {
+        openLandingPage();
     });
 
     fetchUsers();
@@ -20,7 +25,7 @@ async function fetchUsers() {
         const localUrl = 'http://localhost:3000' + '/users/getUsers'
         const hostedUrl = "https://nest.comp4537.com" + "/users/getUsers"
 
-        const response = await fetch(hostedUrl, {
+        const response = await fetch(localUrl, {
             method: "GET",
             credentials: "include",
         });
@@ -47,6 +52,7 @@ function displayUsers(users) {
           <td>${user.email}</td>
           <td>${user.apicalls}</td>
           <td><input type="radio" name="userRadio" data-id="${user.id}" onchange="updateDeleteButton()"></td>
+          <td><button onclick="editUser(${user.id})">Edit</button></td>
         `;
         tableBody.appendChild(row);
     });
@@ -59,9 +65,18 @@ function updateDeleteButton() {
     deleteButton.disabled = !checkedRadio;
 }
 
-function openCreateUserPage() {
-    window.open("signup.html", "_blank", "width=400,height=400");
+function editUser(userId) {
+    window.location.href = `edit-user.html?id=${userId}`;
 }
+
+function openCreateUserPage() {
+    window.location.href = "create-user.html";
+}
+
+function openLandingPage() {
+    window.location.href = "landing.html";
+}
+
 
 async function deleteUser() {
     const checkedRadio = document.querySelector('input[type="radio"]:checked');
@@ -76,7 +91,7 @@ async function deleteUser() {
     try {
         const localUrl = 'http://localhost:3000' + '/users/delete'
         const hostedUrl = "https://nest.comp4537.com" + "/users/delete"
-        const response = await fetch(hostedUrl, {
+        const response = await fetch(localUrl, {
             method: "DELETE",
             credentials: "include",
             headers: {
@@ -98,7 +113,7 @@ async function deleteUser() {
     }
 
     // Refresh the user table after deletion
-    fetchUsers();
+    await fetchUsers();
     updateDeleteButton();
 }
 
