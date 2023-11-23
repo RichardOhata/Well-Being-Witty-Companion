@@ -1,3 +1,5 @@
+import { userUrls } from "./config.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const id = new URLSearchParams(window.location.search).get("id");
 
@@ -51,11 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const fetchUserData = async (id) => {
   try {
-    const localUrl = "http://localhost:3000" + `/users/${id}`;
-    const hostedUrl = "https://nest.comp4537.com" + `/users/${id}`; // Removed the extra slash
-
-    const response = await fetch(localUrl, {
-      method: "GET", // Change the method to GET
+    const response = await fetch(userUrls.fetchUserUrl(id), {
+      method: "GET",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -82,10 +81,7 @@ const fetchUserData = async (id) => {
 
 const updateUser = async (id, userData) => {
   try {
-    const localUrl = "http://localhost:3000" + `/users/${id}`;
-    const hostedUrl = "https://nest.comp4537.com" + `/users/${id}`;
-
-    const response = await fetch(localUrl, {
+    const response = await fetch(userUrls.updateUserUrl(id), {
       method: "PATCH", // Use the appropriate HTTP method for updating
       credentials: "include",
       headers: {

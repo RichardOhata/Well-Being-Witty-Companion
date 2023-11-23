@@ -1,3 +1,5 @@
+import { userUrls } from "./config.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm')
     const forgotPasswordLink = document.getElementById('forgotPasswordLink');
@@ -27,10 +29,8 @@ function openForgotPasswordWindow() {
 const post = (data) => {
     const xhttp = new XMLHttpRequest();
     xhttp.withCredentials = true;
-    const localUrl = 'http://localhost:3000' + '/auth/login';
-    const hostedUrl = "https://nest.comp4537.com" + "/auth/login"
 
-    xhttp.open("POST", hostedUrl, true); 
+    xhttp.open("POST", userUrls.loginUrl, true); 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState === XMLHttpRequest.DONE) {

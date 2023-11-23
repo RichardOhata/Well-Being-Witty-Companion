@@ -1,3 +1,4 @@
+import { userUrls } from "./config.js";
 document.addEventListener('DOMContentLoaded', () => {
     const forgotPasswordForm = document.getElementById('forgotPasswordForm');
 
@@ -21,11 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const sendEmailLinkRequest = async (data) => {
-        const localUrl = 'http://localhost:3000' + '/auth/forgot-password'
-        const hostedUrl = 'https://nest.comp4537.com/auth/forgot-password';
 
         try {
-            const response = await fetch(localUrl, {
+            const response = await fetch(userUrls.forgotPasswordUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

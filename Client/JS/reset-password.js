@@ -1,3 +1,5 @@
+import { userUrls } from "./config.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     const resetPasswordForm = document.getElementById('resetPasswordForm'); // Replace 'resetPasswordForm' with the actual ID of your form
 
@@ -28,10 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const resetPasswordRequest = async (data, resetToken) => {
     try {
         console.log(resetToken);
-        const localUrl = 'http://localhost:3000/users' + '/reset-password';
-        const hostedUrl = 'https://nest.comp4537.com/users' + '/reset-password';
-
-        const response = await fetch(localUrl, {
+        const response = await fetch(userUrls.resetPasswordUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

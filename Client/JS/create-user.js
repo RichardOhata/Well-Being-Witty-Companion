@@ -1,3 +1,5 @@
+import { userUrls, hostedUserUrls } from './config.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const createUserForm = document.getElementById('createUserForm');
     const backBtn = document.getElementById("backBtn");
@@ -40,10 +42,7 @@ const post = (data) => {
     const xhttp = new XMLHttpRequest();
     xhttp.withCredentials = true;
 
-    const localUrl = 'http://localhost:3000' + '/users/create';
-    const hostedUrl = 'https://nest.comp4537.com' + '/users/create';
-
-    xhttp.open('POST', localUrl, true);
+    xhttp.open('POST', userUrls.createUserUrl, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
 
     xhttp.onreadystatechange = () => {

@@ -1,3 +1,5 @@
+import { userUrls } from "./config.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
     const hamburgerIcon = document.getElementById("dropdownIcon");
     const fetchJokeButton = document.getElementById("fetchJokeButton");
@@ -74,12 +76,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
   
   const logout = async () => {
-    window.location.href = "login.html";
     try {
-      const localUrl = 'http://localhost:3000' + '/auth/logout'
-      const hostedUrl = "https://nest.comp4537.com" + "/auth/logout"
 
-      const response = await fetch(hostedUrl, {
+      const response = await fetch(userUrls.logoutUrl, {
         method: "GET",
         credentials: "include",
       });
@@ -88,6 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Logout successful");
         window.location.href = "login.html";
       } else {
+        window.location.href = "login.html";
         const errorData = await response.json();
         console.error(
           "Failed to logout. Errors:",
@@ -97,14 +97,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (error) {
       console.error("Error during logout:", error.message);
     }
+
   };
   
   const getProfile = async () => {
     try {
-      const localUrl = 'http://localhost:3000' + '/auth/profile'
-      const hostedUrl = "https://nest.comp4537.com" + "/auth/profile"
-
-      const response = await fetch(hostedUrl, {
+      const response = await fetch(userUrls.logoutUrl, {
         method: "GET",
         credentials: "include",
       });
@@ -133,10 +131,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Placeholder function, replace with your actual authorization logic
   const isAdmin = async () => {
     try {
-      const localUrl = 'http://localhost:3000' + '/users/getRole'
-      const hostedUrl = "https://nest.comp4537.com" + "/users/getRole"
-
-      const response = await fetch(hostedUrl, {
+      const response = await fetch(userUrls.getRoleUrl, {
         method: "GET",
         credentials: "include",
       });

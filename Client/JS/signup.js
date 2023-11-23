@@ -1,3 +1,5 @@
+import { userUrls } from "./config.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signupForm')
     signupForm.addEventListener('submit', (e) => {
@@ -16,9 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
 const post = (data) => {
     const xhttp = new XMLHttpRequest();
     xhttp.withCredentials = true;
-    const localUrl = 'http://localhost:3000' + '/users/create'
-    // const hostedUrl = "https://nest.comp4537.com" + "/users/create"
-    xhttp.open("POST", hostedUrl, true); // Change endpoint later
+
+    xhttp.open("POST", userUrls.createUserUrl, true); // Change endpoint later
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState === XMLHttpRequest.DONE) {
