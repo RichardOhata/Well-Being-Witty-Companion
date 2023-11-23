@@ -16,13 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
 const post = (data) => {
     const xhttp = new XMLHttpRequest();
     xhttp.withCredentials = true;
-    xhttp.open("POST", "https://nest.comp4537.com" + "/users/create", true); // Change endpoint later
+    const localUrl = 'http://localhost:3000' + '/users/create'
+    // const hostedUrl = "https://nest.comp4537.com" + "/users/create"
+    xhttp.open("POST", hostedUrl, true); // Change endpoint later
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState === XMLHttpRequest.DONE) {
             if (xhttp.status === 201 || xhttp.status === 200) {
                 document.getElementById("responseText").textContent =
-                "User created successfully! You can close this window!";
+                "User created successfully!";
               console.log("User created successfully");
 
                 // window.location.href = "login.html"
