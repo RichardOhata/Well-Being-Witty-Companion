@@ -1,4 +1,4 @@
-import { userUrls, hostedUserUrls } from './config.js';
+import { userUrls } from './config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const createUserForm = document.getElementById('createUserForm');
