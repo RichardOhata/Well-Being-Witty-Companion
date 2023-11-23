@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const hostedUrl = 'https://nest.comp4537.com/auth/forgot-password';
 
         try {
-            const response = await fetch(hostedUrl, {
+            const response = await fetch(localUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

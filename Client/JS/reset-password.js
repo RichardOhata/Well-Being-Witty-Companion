@@ -31,7 +31,7 @@ const resetPasswordRequest = async (data, resetToken) => {
         const localUrl = 'http://localhost:3000/users' + '/reset-password';
         const hostedUrl = 'https://nest.comp4537.com/users' + '/reset-password';
 
-        const response = await fetch(hostedUrl, {
+        const response = await fetch(localUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
