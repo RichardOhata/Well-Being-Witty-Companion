@@ -46,7 +46,7 @@ console.log("")
 
 
 app.use(function (req, res, next) {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5500"); // Change later
+    res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500"); // Change later
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
     res.setHeader("Access-Control-Allow-Credentials", "true")
@@ -58,8 +58,10 @@ app.use(function (req, res, next) {
 
 const jwtAuthentication = (req, res, next) => {
     const token = req.cookies.token;
+    console.log("token", token)
     try {
         const payload = jwt.verify(token, secretKey);
+        console.log("Payload", payload)
         req.payload = payload
         next()
     } catch (err) {
@@ -136,6 +138,7 @@ app.post('/login', (req, res) => {
                     message: 'Login successful',
                     user: result[0], // Assuming result is an array with at most one user
                 };
+                console.log("Login successful")
                 res.cookie('access_token', access_token, {
                     path:"/",
                     secure: true,
@@ -156,6 +159,18 @@ app.post('/login', (req, res) => {
     });
 });
 
+
+app.get('/logout', (req, res) => {
+    // Clear the JWT cookie
+    res.cookie('access_token', '', {
+        httpOnly: true,
+        expires: new Date(0) 
+    });
+
+    res.status(200).json({ message: 'Logged out successfully' });
+    console.log("Logged out successfully")
+});
+
 // Example of how to access payload data 
 // Not logged in user can't call this where a logged in user can
 app.get('/test', jwtAuthentication, (req, res) => {
@@ -169,7 +184,7 @@ app.get('/', (req, res) => {
     res.send('Hello, World!');
   });
 
-app.listen(8000, () => {
-    console.log('Server is running on http://localhost:8000');
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
   });
   
