@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const hamburgerIcon = document.getElementById("dropdownIcon");
     const fetchJokeButton = document.getElementById("fetchJokeButton");
+    const fetchHealthAdviceButton = document.getElementById("fetchAdviceButton");
     const logoutButton = document.getElementById("logoutBtn");
     const getProfileButton = document.getElementById("profileBtn");
     const goToAdminPageButton = document.getElementById("adminBtn");
@@ -30,6 +31,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     fetchJokeButton.addEventListener("click",  () => {
       fetchJoke();
     });
+
+    fetchHealthAdviceButton.addEventListener("click",  () => {
+        fetchHealthAdvice();
+      });
   });
   
   const fetchJoke = () => {
@@ -46,6 +51,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       var data = JSON.stringify({ "age": age });
       xhr.send(data);
   }
+
+  const fetchHealthAdvice = () => {
+    var age = document.getElementById('ageInput').value;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://127.0.0.1:5000/" + "get-health-advice", true); // Update the endpoint URL
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            document.getElementById('adviceDisplay').innerText = response.advice; // Update the element ID
+        }
+    };
+    var data = JSON.stringify({ "age": age });
+    xhr.send(data);
+}
   
   const toggleDropdown = () => {
     var dropdownContent = document.getElementById("dropdownContent");
