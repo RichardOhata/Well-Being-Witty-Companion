@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       var age = document.getElementById('ageInput').value;
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "http://127.0.0.1:5000/" + "get-joke", true);
+      xhr.withCredentials = true;
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.onreadystatechange = function () {
           if (xhr.readyState === 4 && xhr.status === 200) {
