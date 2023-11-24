@@ -34,6 +34,9 @@ UPDATE request_tracking
 SET request_count = request_count + 1
 WHERE method = ? AND endpoint = ?;
 `
+const selectReqData = `
+SELECT * FROM request_tracking
+`
 
 const SQL_INSERT_USER = 'INSERT INTO users (username, password, email) VALUES (?, ?, ?)';
 
@@ -43,6 +46,7 @@ module.exports = {
     createUserTable,
     createReqTrackingTable,
     incrementReqCount,
+    selectReqData,
     SQL_INSERT_USER,
     SQL_SELECT_USER
 }

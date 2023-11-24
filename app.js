@@ -54,7 +54,7 @@ db.query(query.createReqTrackingTable, (err, result) => {
 
 
 router.use(function (req, res, next) {
-    res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500, https://vivianwebdev.com/Comp4537/witty/Client/HTML/login.html"); // Change later
+    res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500"); // Change later
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
     res.setHeader("Access-Control-Allow-Credentials", "true")
@@ -198,6 +198,21 @@ router.get('/test', jwtAuthentication, (req, res) => {
         apple: 123
     })
 });
+
+router.get('/getStats', jwtAuthentication, (req, res) => {
+    db.query(query.selectReqData, (err, result) => {
+        if (err) {
+            const response = {
+                success: false,
+                error: "Database error",
+                message: "Error querying the database.",
+            };
+            res.status(500).json(response);
+    } else {
+        res.status(200).json(result)
+    }   
+    })
+})
 
 router.get('/', (req, res) => {
     res.send('Hello, World!');
