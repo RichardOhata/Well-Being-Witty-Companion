@@ -185,7 +185,7 @@ router.get('/logout', (req, res) => {
         httpOnly: true,
         expires: new Date(0) 
     });
-    incrementReqCount('GET', 'logout')
+    incrementReqCount('GET', '/logout')
     res.status(200).json({ message: 'Logged out successfully' });
     console.log("Logged out successfully")
 });
