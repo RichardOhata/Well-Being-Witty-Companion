@@ -22,12 +22,7 @@ const db = mysql.createConnection({
     database: process.env.DB_DATABASE,
 });
 
-// const db = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: '-',
-//     database: '-'
-// }); 
+
 db.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
@@ -103,8 +98,6 @@ app.post('/create', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    console.log("new3")
-
     const values = [req.body.email]; 
     db.query(query.SQL_SELECT_USER, values, (err, result) => {
         if (err) {
