@@ -7,10 +7,10 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt')
 const saltRounds = 10;
 const app = express();
-
+const router = express.Router();
 app.use(express.json());
 app.use(cookieParser());
-
+app.use('/', router);
 
 // const secretKey = require('crypto').randomBytes(64).toString('hex') 
 const secretKey = process.env.JWT_SECRET_KEY
@@ -43,11 +43,25 @@ db.query(query.createUserTable, (err, result) => {
         console.log('Table "users" created successfully');
     }
 });
-console.log("")
+
+db.query(query.createReqTrackingTable, (err, result) => {
+    if (err) {
+        console.error('Error creating the table:', err);
+    } else {
+        console.log('Table "requestTracking" created successfully');
+        db.query(query.initalReqData, (err, result) => {
+            if (err) {
+                console.error('Error inserting initial data:', err);
+              } else {
+                console.log('Initial data inserted successfully');
+              }
+        })
+    }
+});
 
 
-app.use(function (req, res, next) {
-    res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500"); // Change later
+router.use(function (req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500, https://vivianwebdev.com/Comp4537/witty/Client/HTML/login.html"); // Change later
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
     res.setHeader("Access-Control-Allow-Credentials", "true")
@@ -75,8 +89,17 @@ const jwtAuthentication = (req, res, next) => {
     }
 }
 
+const incrementReqCount = (method, endpoint) => {
+    const incrementValues = [method, endpoint];
+    db.query(query.incrementReqCount, incrementValues, (err, result) => {
+        if (err) {
+            console.error(err);
+        }
+    });
+}
 
-app.post('/create', (req, res) => {
+
+router.post('/create', (req, res) => {
     const salt = bcrypt.genSaltSync(saltRounds);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
     const values = [req.body.username, hashedPassword, req.body.email];
@@ -91,6 +114,7 @@ app.post('/create', (req, res) => {
 
             res.status(409).json(response);
         } else {
+          incrementReqCount('POST', '/create')
             const response = {
                 success: true,
                 message: 'User registered successfully',
@@ -102,7 +126,7 @@ app.post('/create', (req, res) => {
     });
 });
 
-app.post('/login', (req, res) => {
+router.post('/login', (req, res) => {
     console.log("new3")
 
     const values = [req.body.email]; 
@@ -140,6 +164,7 @@ app.post('/login', (req, res) => {
                     user: result[0], // Assuming result is an array with at most one user
                 };
                 console.log("Login successful")
+                incrementReqCount('POST', '/login')
                 res.cookie('access_token', access_token, {
                     path:"/",
                     secure: true,
@@ -161,27 +186,27 @@ app.post('/login', (req, res) => {
 });
 
 
-app.get('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
     // Clear the JWT cookie
     res.cookie('access_token', '', {
         httpOnly: true,
         expires: new Date(0) 
     });
-
+    incrementReqCount('GET', 'logout')
     res.status(200).json({ message: 'Logged out successfully' });
     console.log("Logged out successfully")
 });
 
 // Example of how to access payload data 
 // Not logged in user can't call this where a logged in user can
-app.get('/test', jwtAuthentication, (req, res) => {
-    console.log(req.payload) // view payload data from cookie
+router.get('/test', jwtAuthentication, (req, res) => {
+    console.log(req.payload); // view payload data from cookie
     res.send({
         apple: 123
     })
-})
+});
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     res.send('Hello, World!');
   });
 
