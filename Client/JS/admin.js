@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
     openLandingPage();
   });
 
-  fetchUsers();
+    fetchUsers();
+    fetchStats();
 });
 
 async function fetchUsers() {
@@ -65,6 +66,48 @@ function attachEventListeners() {
       editUser(userId);
     });
   });
+}
+
+async function fetchStats() {
+    try {
+        const hostedUrl = "http://localhost:3000" + "/getStats" // Change to hosted url later
+         const response = await fetch(hostedUrl, 
+            {
+                method: "GET",
+                credentials: "include",
+            });
+    
+            if (response.ok) {
+                const stats = await response.json();
+                displayStats(stats);
+            } else {
+                console.error("Failed to fetch users");
+            }
+        } catch (error) {
+            console.error("Error:", error.message);
+        }
+}
+
+function displayStats(stats) {
+    const tableBody = document.getElementById("statsTableBody");
+    tableBody.innerHTML = "";
+
+    stats.forEach((stat) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${stat.method}</td>
+          <td>${stat.endpoint}</td>
+          <td>${stat.request_count}</td>
+          <td>${stat.last_served_at}</td>
+          <td>${stat.description}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+function updateDeleteButton() {
+    const deleteButton = document.getElementById("deleteUserBtn");
+    const checkedRadio = document.querySelector('input[type="radio"]:checked');
 
   const radioButtons = document.querySelectorAll('input[type="radio"]');
   radioButtons.forEach((radio) => {
