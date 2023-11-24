@@ -42,7 +42,6 @@ const SQL_SELECT_USER = 'SELECT * FROM users WHERE email = ?';
 module.exports = {
     createUserTable,
     createReqTrackingTable,
-    initalReqData,
     incrementReqCount,
     SQL_INSERT_USER,
     SQL_SELECT_USER

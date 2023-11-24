@@ -49,13 +49,6 @@ db.query(query.createReqTrackingTable, (err, result) => {
         console.error('Error creating the table:', err);
     } else {
         console.log('Table "requestTracking" created successfully');
-        db.query(query.initalReqData, (err, result) => {
-            if (err) {
-                console.error('Error inserting initial data:', err);
-              } else {
-                console.log('Initial data inserted successfully');
-              }
-        })
     }
 });
 
