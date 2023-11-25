@@ -1,6 +1,9 @@
 import { userUrls } from "./config.js";
+// Show/hide tables based on the selected tab
 
 document.addEventListener("DOMContentLoaded", () => {
+  const usersTabBtn = document.getElementById("usersTabBtn");
+  const statsTabBtn = document.getElementById("statsTabBtn");
   const deleteUserButton = document.getElementById("deleteUserBtn");
   const createUserButton = document.getElementById("createUserBtn");
   const backBtn = document.getElementById("backBtn");
@@ -15,6 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   backBtn.addEventListener("click", (event) => {
     openLandingPage();
+  });
+
+  usersTabBtn.addEventListener("click", () => {
+    showTable("usersTable");
+  });
+
+  statsTabBtn.addEventListener("click", () => {
+    showTable("statsTable");
   });
 
     fetchUsers();
@@ -66,12 +77,17 @@ function attachEventListeners() {
       editUser(userId);
     });
   });
+
+  const radioButtons = document.querySelectorAll('input[type="radio"]');
+  radioButtons.forEach((radio) => {
+    radio.addEventListener("change", updateDeleteButton);
+  });
 }
 
 async function fetchStats() {
     try {
-        const hostedUrl = "http://localhost:3000" + "/getStats" // Change to hosted url later
-         const response = await fetch(hostedUrl, 
+        console.log(userUrls.getStatsUrl)
+         const response = await fetch(userUrls.getStatsUrl, 
             {
                 method: "GET",
                 credentials: "include",
@@ -79,7 +95,8 @@ async function fetchStats() {
     
             if (response.ok) {
                 const stats = await response.json();
-                displayStats(stats);
+                console.log(stats)
+                displayStats(stats.stats);
             } else {
                 console.error("Failed to fetch users");
             }
@@ -105,15 +122,6 @@ function displayStats(stats) {
     });
 }
 
-function updateDeleteButton() {
-    const deleteButton = document.getElementById("deleteUserBtn");
-    const checkedRadio = document.querySelector('input[type="radio"]:checked');
-
-  const radioButtons = document.querySelectorAll('input[type="radio"]');
-  radioButtons.forEach((radio) => {
-    radio.addEventListener("change", updateDeleteButton);
-  });
-}
 export function updateDeleteButton() {
   const deleteButton = document.getElementById("deleteUserBtn");
   const checkedRadio = document.querySelector('input[type="radio"]:checked');
@@ -169,4 +177,28 @@ async function deleteUser() {
   // Refresh the user table after deletion
   await fetchUsers();
   updateDeleteButton();
+}
+function showTable(tableId) {
+  const userTable = document.getElementById("usersTable");
+  const statsTable = document.getElementById("statsTable");
+  const createUserButton = document.getElementById("createUserBtn");
+  const deleteUserButton = document.getElementById("deleteUserBtn");
+  
+  // Hide both tables initially
+  userTable.style.display = "none";
+  statsTable.style.display = "none";
+
+   // Hide or show create and delete buttons based on the selected table
+   if (tableId === "usersTable") {
+    createUserButton.style.display = "block";
+    deleteUserButton.style.display = "block";
+  } else {
+    createUserButton.style.display = "none";
+    deleteUserButton.style.display = "none";
+  }
+  // Show the selected table
+  const selectedTable = document.getElementById(tableId);
+  if (selectedTable) {
+    selectedTable.style.display = "table";
+  }
 }

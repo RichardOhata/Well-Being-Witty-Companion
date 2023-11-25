@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   const getProfile = async () => {
     try {
-      const response = await fetch(userUrls.logoutUrl, {
+      const response = await fetch(userUrls.getProfileUrl, {
         method: "GET",
         credentials: "include",
       });
