@@ -40,34 +40,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   
   const fetchJoke = () => {
-      var age = document.getElementById('ageInput').value;
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "http://127.0.0.1:5000/" + "get-joke", true);
-      xhr.withCredentials = true;
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-              var response = JSON.parse(xhr.responseText);
-              document.getElementById('jokeDisplay').innerText = response.joke;
-          }
-      };
-      var data = JSON.stringify({ "age": age });
-      xhr.send(data);
-  }
-
-  const fetchHealthAdvice = () => {
     var age = document.getElementById('ageInput').value;
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://127.0.0.1:5000/" + "get-health-advice", true); // Update the endpoint URL
+    xhr.open("POST", "https://thantyatithaw.pythonanywhere.com/" + "get-joke", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            document.getElementById('adviceDisplay').innerText = response.advice; // Update the element ID
+            document.getElementById('jokeDisplay').innerText = response.joke;
         }
     };
     var data = JSON.stringify({ "age": age });
     xhr.send(data);
+}
+
+const fetchHealthAdvice = () => {
+  var age = document.getElementById('ageInput2').value;
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://thantyatithaw.pythonanywhere.com/" + "get-health-advice", true); // Update the endpoint URL
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          document.getElementById('adviceDisplay').innerText = response.advice; // Update the element ID
+      }
+  };
+  var data = JSON.stringify({ "age": age });
+  xhr.send(data);
 }
   
   const toggleDropdown = () => {
