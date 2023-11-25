@@ -95,7 +95,6 @@ async function fetchStats() {
     
             if (response.ok) {
                 const stats = await response.json();
-                console.log(stats)
                 displayStats(stats.stats);
             } else {
                 console.error("Failed to fetch users");
@@ -183,7 +182,7 @@ function showTable(tableId) {
   const statsTable = document.getElementById("statsTable");
   const createUserButton = document.getElementById("createUserBtn");
   const deleteUserButton = document.getElementById("deleteUserBtn");
-  
+
   // Hide both tables initially
   userTable.style.display = "none";
   statsTable.style.display = "none";
