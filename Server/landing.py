@@ -5,6 +5,7 @@ from transformers import GPT2LMHeadModel, GPT2Tokenizer
 import jwt
 from dotenv import load_dotenv
 import os
+import requests
 
 load_dotenv()
 
@@ -58,6 +59,13 @@ def get_joke():
     jokes = generator(joke_query, num_return_sequences=1)
     joke_response = jokes[0]['generated_text']
 
+    increment_fetch_joke_url = "http://your-nestjs-server/request/incrementFetchJoke"
+    try:
+        response = requests.get(increment_fetch_joke_url)  # You can customize the request method and headers if needed
+        response.raise_for_status()  # Raises an HTTPError for bad responses
+    except requests.exceptions.RequestException as e:
+        print(f"Error making request to NestJS server: {e}")
+
     return jsonify(joke=joke_response)
 
 @app.route('/get-health-advice', methods=['POST'])
@@ -74,6 +82,13 @@ def get_health_tip():
 
     # Limit the response to a single line
     health_tip_response = health_tip_response.split('\n')[0]
+
+    increment_fetch_joke_url = "http://your-nestjs-server/request/incrementGetHealthTip"
+    try:
+        response = requests.get(increment_fetch_joke_url)  # You can customize the request method and headers if needed
+        response.raise_for_status()  # Raises an HTTPError for bad responses
+    except requests.exceptions.RequestException as e:
+        print(f"Error making request to NestJS server: {e}")
 
     return jsonify(advice=health_tip_response)
 
