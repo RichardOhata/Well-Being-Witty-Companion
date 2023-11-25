@@ -6,17 +6,18 @@ const createUrl = (base, endpoint) => `${base}${endpoint}`;
 
 // User-related URLs
 const userUrls1 = {
-  getUsersUrl: createUrl(localUrlBase, '/users/getUsers'),
-  deleteUserUrl: createUrl(localUrlBase, '/users/delete'),
-  createUserUrl: createUrl(localUrlBase, '/users/create'),
+  getUsersUrl: createUrl(localUrlBase, '/users/getUsers'), 
+  deleteUserUrl: createUrl(localUrlBase, '/users/delete'), // {id}
+  createUserUrl: createUrl(localUrlBase, '/users/create'), // {username, email, password}
   fetchUserUrl: (id) => createUrl(localUrlBase, `/users/${id}`),
   updateUserUrl: (id) => createUrl(localUrlBase, `/users/${id}`),
-  forgotPasswordUrl: createUrl(localUrlBase, '/auth/forgot-password'),
+  forgotPasswordUrl: createUrl(localUrlBase, '/auth/forgot-password'), // {email}
   logoutUrl: createUrl(localUrlBase, '/auth/logout'),
-  getProfileUrl: createUrl(localUrlBase, '/auth/profile'),
+  getProfileUrl: createUrl(localUrlBase, '/auth/profile'), 
   getRoleUrl: createUrl(localUrlBase, '/users/getRole'),
-  loginUrl: createUrl(localUrlBase, '/auth/login'),
-  resetPasswordUrl: createUrl(localUrlBase, '/users/reset-password'),
+  loginUrl: createUrl(localUrlBase, '/auth/login'), // {email}
+  resetPasswordUrl: createUrl(localUrlBase, '/users/reset-password'), // {password}
+  
 
 };
 

@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
       if (response.ok) {
         const data = await response.json();
-        const isAdmin = data && data.admin === true;
+        const isAdmin = data && data.admin === 1;
         console.log(isAdmin);
   
         return isAdmin;
