@@ -43,6 +43,13 @@ def get_joke():
     joke_response = joke_data[0]['generated_text'] if joke_data else "Joke generation failed."
     print(joke_response)
 
+    increment_fetch_joke_url = "http://your-nestjs-server/request/incrementFetchJoke"
+    try:
+        response = requests.get(increment_fetch_joke_url)  # You can customize the request method and headers if needed
+        response.raise_for_status()  # Raises an HTTPError for bad responses
+    except requests.exceptions.RequestException as e:
+        print(f"Error making request to NestJS server: {e}")
+
     return jsonify(joke=joke_response)
 
 # Initialize a SageMaker runtime client
@@ -67,7 +74,14 @@ def get_health_tip():
     generated_text = health_tip_response[0]['generated_text']  # Extract the generated text
     first_sentence = generated_text.split('.')[0] + '.'
 
-    return jsonify(advice=first_sentence)
+    increment_fetch_joke_url = "http://your-nestjs-server/request/incrementGetHealthTip"
+    try:
+        response = requests.get(increment_fetch_joke_url)  # You can customize the request method and headers if needed
+        response.raise_for_status()  # Raises an HTTPError for bad responses
+    except requests.exceptions.RequestException as e:
+        print(f"Error making request to NestJS server: {e}")
+
+    return jsonify(advice=health_tip_response)
 
 if __name__ == '__main__':
     app.run(debug=True)

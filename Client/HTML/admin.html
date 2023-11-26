@@ -14,8 +14,12 @@
     <h1>Admin Page</h1>
 
     <div id="feedback"></div>
-
-    <table>
+    <!-- Tab buttons -->
+    <div>
+      <button id="usersTabBtn">Users</button>
+      <button id="statsTabBtn">Stats</button>
+    </div>
+    <table id="statsTable" style="display: none;">
       <thead>
         <tr>
           <th>Method</th>
@@ -28,7 +32,7 @@
       <tbody id="statsTableBody"></tbody>
     </table>
 
-    <table>
+    <table id="usersTable">
       <thead>
         <tr>
           <th>Username</th>

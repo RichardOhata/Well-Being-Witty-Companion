@@ -102,7 +102,7 @@ const fetchHealthAdvice = () => {
   
   const getProfile = async () => {
     try {
-      const response = await fetch(userUrls.logoutUrl, {
+      const response = await fetch(userUrls.getProfileUrl, {
         method: "GET",
         credentials: "include",
       });
@@ -137,7 +137,7 @@ const fetchHealthAdvice = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        const isAdmin = data && data.admin === true;
+        const isAdmin = data && data.admin === 1;
         console.log(isAdmin);
   
         return isAdmin;
