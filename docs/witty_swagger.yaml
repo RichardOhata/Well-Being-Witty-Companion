@@ -1,0 +1,331 @@
+
+"openapi": "3.0.0"
+"info":
+  "title": "Authentication API"
+  "description": "API for user authentication"
+  "version": "1.0.0"
+"servers":
+  -
+    "url": "https://nest.comp4537.com"
+    "description": "Production Server"
+  -
+    "url": "https://thantyatithaw.pythonanywhere.com/"
+    "description": "Secondary Server for Jokes and Health Advice"
+"paths":
+  "/auth/login":
+    "post":
+      "summary": "User login"
+      "description": "This endpoint authenticates a user by their email and password."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "required":
+                - "email"
+                - "password"
+              "properties":
+                "email":
+                  "type": "string"
+                  "format": "email"
+                  "description": "User's email"
+                "password":
+                  "type": "string"
+                  "format": "password"
+                  "description": "User's password"
+      "responses":
+        "200":
+          "description": "Login successful"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "token":
+                    "type": "string"
+                    "description": "Authentication token to be used for subsequent requests"
+        "401":
+          "description": "Authentication failed due to invalid credentials"
+        "500":
+          "description": "Internal server error"
+  "/users/create":
+    "post":
+      "summary": "Create a new user"
+      "description": "This endpoint creates a new user with a username, email, and password."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "required":
+                - "username"
+                - "email"
+                - "password"
+              "properties":
+                "username":
+                  "type": "string"
+                  "description": "Username for the new user"
+                "email":
+                  "type": "string"
+                  "format": "email"
+                  "description": "Email for the new user"
+                "password":
+                  "type": "string"
+                  "format": "password"
+                  "description": "Password for the new user"
+      "responses":
+        "201":
+          "description": "User created successfully"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "id":
+                    "type": "string"
+                    "description": "Unique identifier for the user"
+                  "username":
+                    "type": "string"
+                  "email":
+                    "type": "string"
+        "400":
+          "description": "Bad request, e.g., missing parameters or user already exists"
+        "500":
+          "description": "Internal server error"
+  "/get-joke":
+    "post":
+      "summary": "Get a joke"
+      "description": "Retrieves a joke tailored to the provided age."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "age":
+                  "type": "integer"
+                  "description": "The age for which to tailor the joke."
+      "responses":
+        "200":
+          "description": "A joke is returned successfully."
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "joke":
+                    "type": "string"
+  "/get-health-advice":
+    "post":
+      "summary": "Get health advice"
+      "description": "Provides health advice based on the provided age."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "age":
+                  "type": "integer"
+                  "description": "The age for which to provide health advice."
+      "responses":
+        "200":
+          "description": "Health advice is returned successfully."
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "advice":
+                    "type": "string"
+  "/auth/logout":
+    "get":
+      "summary": "User logout"
+      "description": "This endpoint logs out the user by terminating the session."
+      "responses":
+        "200":
+          "description": "Logout successful"
+  "/auth/forget-password":
+    "post":
+      "summary": "Forget Password"
+      "description": "This endpoint is used for initiating a password reset process."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "required":
+                - "email"
+              "properties":
+                "email":
+                  "type": "string"
+                  "format": "email"
+                  "description": "User's email to send password reset instructions"
+      "responses":
+        "200":
+          "description": "Password reset email sent successfully"
+        "400":
+          "description": "Bad request if the email is not provided or invalid"
+        "500":
+          "description": "Internal server error"
+  "/auth/reset-password":
+    "post":
+      "summary": "Reset Password"
+      "description": "This endpoint allows users to reset their password."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "required":
+                - "password"
+              "properties":
+                "password":
+                  "type": "string"
+                  "format": "password"
+                  "description": "New password for the user"
+      "responses":
+        "200":
+          "description": "Password reset successfully"
+        "400":
+          "description": "Bad request if the password is not provided"
+        "500":
+          "description": "Internal server error"
+  "/users/delete/{id}":
+    "delete":
+      "summary": "Delete User"
+      "description": "This endpoint deletes a user by their ID."
+      "parameters":
+        -
+          "in": "path"
+          "name": "id"
+          "required": true
+          "schema":
+            "type": "integer"
+          "description": "Unique ID of the user to delete"
+      "responses":
+        "200":
+          "description": "User deleted successfully"
+        "404":
+          "description": "User not found"
+        "500":
+          "description": "Internal server error"
+  "/users/{id}":
+    "patch":
+      "summary": "Update User"
+      "description": "This endpoint updates user details."
+      "parameters":
+        -
+          "in": "path"
+          "name": "id"
+          "required": true
+          "schema":
+            "type": "integer"
+          "description": "Unique ID of the user"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "username":
+                  "type": "string"
+                  "description": "New username of the user"
+                "email":
+                  "type": "string"
+                  "format": "email"
+                  "description": "New email of the user"
+                "admin":
+                  "type": "boolean"
+                  "description": "Admin status of the user"
+      "responses":
+        "200":
+          "description": "User updated successfully"
+        "400":
+          "description": "Bad request if the provided data is invalid"
+        "404":
+          "description": "User not found"
+        "500":
+          "description": "Internal server error"
+  "/stats/getStats":
+    "get":
+      "summary": "Get statistics"
+      "description": "Retrieves statistical data. Requires JWT authentication."
+      "security":
+        -
+          "bearerAuth": []
+      "responses":
+        "200":
+          "description": "Successfully retrieved statistics"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+        "500":
+          "description": "Database error"
+  "/users/getUsers":
+    "get":
+      "summary": "Get all users"
+      "description": "Retrieves a list of all users. Requires JWT authentication."
+      "security":
+        -
+          "bearerAuth": []
+      "responses":
+        "200":
+          "description": "Successfully retrieved list of users"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+        "500":
+          "description": "Internal server error"
+  "/users/getRole":
+    "get":
+      "summary": "Get user roles"
+      "description": "Retrieves the roles of users. Requires JWT authentication."
+      "security":
+        -
+          "bearerAuth": []
+      "responses":
+        "200":
+          "description": "Successfully retrieved user roles"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "id":
+                      "type": "integer"
+                      "format": "int64"
+                      "description": "Unique identifier for the user"
+                    "role":
+                      "type": "string"
+                      "description": "The role of the user"
+        "500":
+          "description": "Internal server error"
+  "/auth/profile":
+    "get":
+      "summary": "Get user profile"
+      "description": "Retrieves the profile of the currently authenticated user."
+      "security":
+        -
+          "bearerAuth": []
+      "responses":
+        "200":
+          "description": "Successfully retrieved user profile"
+          "content":
+            "application/json": ""
+        "401":
+          "description": "Unauthorized, token is missing or invalid"
+        "500":
+          "description": "Internal server error"
