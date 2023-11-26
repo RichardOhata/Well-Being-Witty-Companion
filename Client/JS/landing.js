@@ -1,4 +1,5 @@
 import { userUrls } from "./config.js";
+import { landingStrings } from "./strings.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const hamburgerIcon = document.getElementById("dropdownIcon");
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const fetchJoke = () => {
     var age = document.getElementById('ageInput').value;
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://thantyatithaw.pythonanywhere.com/" + "get-joke", true);
+    xhr.open("POST", landingStrings.endpoint + landingStrings.jokeResource, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -57,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 const fetchHealthAdvice = () => {
   var age = document.getElementById('ageInput2').value;
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "https://thantyatithaw.pythonanywhere.com/" + "get-health-advice", true); // Update the endpoint URL
+  xhr.open("POST", landingStrings.endpoint + landingStrings.healthResource, true); // Update the endpoint URL
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
@@ -84,18 +85,18 @@ const fetchHealthAdvice = () => {
       });
   
       if (response.ok) {
-        console.log("Logout successful");
+        console.log(landingStrings.logoutSuccess);
         window.location.href = "login.html";
       } else {
         window.location.href = "login.html";
         const errorData = await response.json();
         console.error(
-          "Failed to logout. Errors:",
-          errorData.message || "Unknown error"
+          `${landingStrings.logoutFail} ${landingStrings.errors} 
+          ${errorData.message || landingStrings.unknownErr}`
         );
       }
     } catch (error) {
-      console.error("Error during logout:", error.message);
+      console.error(`${landingStrings.logoutErr} ${error.message}`);
     }
 
   };
@@ -109,16 +110,16 @@ const fetchHealthAdvice = () => {
   
       if (response.ok) {
         const profileData = await response.json();
-        console.log("User profile:", profileData);
+        console.log(landingStrings.userProfile, profileData);
       } else {
         const errorData = await response.json();
         console.error(
-          "Failed to get user profile. Errors:",
-          errorData.message || "Unknown error"
+          `${landingStrings.userProfileFail} ${landingStrings.errors} 
+          ${errorData.message || landingStrings.unknownErr}`
         );
       }
     } catch (error) {
-      console.error("Error during profile request:", error.message);
+      console.error(landingStrings.profileReqErr, error.message);
     }
   };
   
@@ -143,7 +144,7 @@ const fetchHealthAdvice = () => {
         return isAdmin;
       }
     } catch (error) {
-      console.error("Error checking user status:", error);
+      console.error(landingStrings.userStatusErr, error);
       return null;
     }
   };

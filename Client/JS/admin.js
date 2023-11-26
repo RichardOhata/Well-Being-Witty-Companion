@@ -1,4 +1,5 @@
 import { userUrls } from "./config.js";
+import { adminStrings } from "./strings.js";
 // Show/hide tables based on the selected tab
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -44,10 +45,10 @@ async function fetchUsers() {
       const users = await response.json();
       displayUsers(users);
     } else {
-      console.error("Failed to fetch users");
+      console.error(adminStrings.fetchUserErrMsg);
     }
   } catch (error) {
-    console.error("Error:", error.message);
+    console.error(`${adminStrings.error}:`, error.message);
   }
 }
 
@@ -97,10 +98,10 @@ async function fetchStats() {
                 const stats = await response.json();
                 displayStats(stats.stats);
             } else {
-                console.error("Failed to fetch users");
+                console.error(adminStrings.fetchUserErrMsg);
             }
         } catch (error) {
-            console.error("Error:", error.message);
+            console.error(`${adminStrings.error}:`, error.message);
         }
 }
 
@@ -145,7 +146,7 @@ async function deleteUser() {
   const feedbackDiv = document.getElementById("feedback");
 
   if (!checkedRadio) {
-    feedbackDiv.textContent = "Please select a user to delete.";
+    feedbackDiv.textContent = adminStrings.userDeleteFeedback;
     return;
   }
 
@@ -165,12 +166,12 @@ async function deleteUser() {
 
     if (!response.ok) {
       const errorData = await response.json();
-      feedbackDiv.textContent = `Failed to delete user. Error: ${errorData.message}`;
+      feedbackDiv.textContent = `${adminStrings.deleteUserErrMsg}. ${adminStrings.error}: ${errorData.message}`;
     } else {
-      feedbackDiv.textContent = "User deleted successfully!";
+      feedbackDiv.textContent = adminStrings.userDeleteSuccess;
     }
   } catch (error) {
-    feedbackDiv.textContent = `Error: ${error.message}`;
+    feedbackDiv.textContent = `${adminStrings.error}: ${error.message}`;
   }
 
   // Refresh the user table after deletion

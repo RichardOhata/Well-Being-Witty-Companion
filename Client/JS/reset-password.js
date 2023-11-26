@@ -1,4 +1,5 @@
 import { userUrls } from "./config.js";
+import { resetPasswordStrings } from "./strings.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const resetPasswordForm = document.getElementById('resetPasswordForm'); // Replace 'resetPasswordForm' with the actual ID of your form
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const feedbackDiv = document.getElementById("responseText").textContent = responseText;
 
         if (password !== confirmPassword) {
-            feedbackDiv.textContent = "Passwords do not match.";
+            feedbackDiv.textContent = resetPasswordStrings.passwordMismatch
         } else {
             // Passwords match, initiate password reset
             feedbackDiv.textContent = ""; // Clear any previous error messages
@@ -49,7 +50,7 @@ const resetPasswordRequest = async (data, resetToken) => {
             document.getElementById("responseText").textContent = responseText;
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error(resetPasswordStrings.error, error);
     }
 };
 

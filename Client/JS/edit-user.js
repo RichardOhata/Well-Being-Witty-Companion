@@ -1,10 +1,11 @@
 import { userUrls } from "./config.js";
+import { editUserStrings } from "./strings.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const id = new URLSearchParams(window.location.search).get("id");
 
   if (!id) {
-    console.error("User ID not provided in the URL");
+    console.error(editUserStrings.useridMissing);
     // Handle the error, maybe redirect back to the admin page
     return;
   }
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Populate other fields as needed
     })
     .catch((error) => {
-      console.error("Error fetching user data:", error.message);
+      console.error(`${editUserStrings.userDataFetchErr}: ${error.message}`);
       // Handle the error, maybe show a message to the user
     });
 
@@ -68,13 +69,13 @@ const fetchUserData = async (id) => {
     } else {
       const errorData = await response.json();
       console.error(
-        "Failed to fetch user data. Errors:",
-        errorData.message || "Unknown error"
+        `${editUserStrings.userDataFetchFail}. ${editUserStrings.errors}: 
+        ${errorData.message || editUserStrings.unknownErr}`
       );
-      throw new Error(errorData.message || "Unknown error");
+      throw new Error(errorData.message || editUserStrings.unknownErr);
     }
   } catch (error) {
-    console.error("Error during user data request:", error.message);
+    console.error(editUserStrings.dataReqErr, error.message);
     throw error;
   }
 };
@@ -91,20 +92,20 @@ const updateUser = async (id, userData) => {
     });
 
     if (response.ok) {
-      console.log("User updated successfully");
-      document.getElementById('responseText').textContent = 'User edited successfully!';
-      console.log('User created successfully');
+      console.log(editUserStrings.userUpdateSuccess);
+      document.getElementById('responseText').textContent = editUserStrings.userEditSuccess;
+      console.log(editUserStrings.userCreateSuccess);
       // Optionally, you can redirect or show a success message
     } else {
       const errorData = await response.json();
       console.error(
-        "Failed to update user. Errors:",
-        errorData.message || "Unknown error"
+        `${editUserStrings.userUpdateFail} ${editUserStrings.errors}: 
+        ${errorData.message || editUserStrings.unknownErr}`
       );
       // Handle the error, maybe show a message to the user
     }
   } catch (error) {
-    console.error("Error updating user:", error.message);
+    console.error(editUserStrings.updateUserErr, error.message);
     // Handle the error, maybe show a message to the user
   }
 };

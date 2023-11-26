@@ -1,4 +1,5 @@
 import { userUrls } from "./config.js";
+import { signupStrings } from "./strings.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signupForm')
@@ -25,8 +26,8 @@ const post = (data) => {
         if (xhttp.readyState === XMLHttpRequest.DONE) {
             if (xhttp.status === 201 || xhttp.status === 200) {
                 document.getElementById("responseText").textContent =
-                "User created successfully!";
-              console.log("User created successfully");
+                signupStrings.userCreateSuccess
+              console.log(signupStrings.userCreateSuccess);
 
                 // window.location.href = "login.html"
             } else {

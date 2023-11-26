@@ -1,4 +1,5 @@
 import { userUrls } from './config.js';
+import { createUserStrings } from './strings.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const createUserForm = document.getElementById('createUserForm');
@@ -48,8 +49,8 @@ const post = (data) => {
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState === XMLHttpRequest.DONE) {
             if (xhttp.status === 201 || xhttp.status === 200) {
-                document.getElementById('responseText').textContent = 'User created successfully!';
-                console.log('User created successfully');
+                document.getElementById('responseText').textContent = `${createUserStrings.userCreateSuccess}!`;
+                console.log(createUserStrings.userCreateSuccess);
             } else {
                 const responseText = document.getElementById('responseText');
                 responseText.innerHTML = xhttp.responseText;

@@ -1,4 +1,6 @@
 import { userUrls } from "./config.js";
+import { forgotPasswordStrings } from "./strings.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     const forgotPasswordForm = document.getElementById('forgotPasswordForm');
 
@@ -16,8 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await sendEmailLinkRequest(data);
         } catch (error) {
-            console.error('Error sending reset request:', error);
-            document.getElementById('responseText').textContent = 'An error occurred.';
+            console.error(forgotPasswordStrings.resetReqErr, error);
+            document.getElementById('responseText').textContent = forgotPasswordStrings.err;
         }
     };
 
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const responseData = await response.json();
             document.getElementById('responseText').textContent = responseData.message;
         } catch (error) {
-            throw new Error('Error sending reset request:', error);
+            throw new Error(forgotPasswordStrings.resetReqErr, error);
         }
     };
 });
