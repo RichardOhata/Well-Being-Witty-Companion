@@ -61,7 +61,7 @@ function displayUsers(users) {
     row.innerHTML = `
           <td>${user.username}</td>
           <td>${user.email}</td>
-          <td>${user.apicalls}</td>
+          <td>${user.apiCalls}</td>
           <td><input type="radio" name="userRadio" data-id="${user.id}"></td>
           <td><button class="editBtn" data-id="${user.id}">Edit</button></td>
         `;
