@@ -33,10 +33,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   
     fetchJokeButton.addEventListener("click",  () => {
       fetchJoke();
+   
+      incrementJokeCount();
+     
     });
 
     fetchHealthAdviceButton.addEventListener("click",  () => {
         fetchHealthAdvice();
+        incrementHealthCount();
       });
   });
   
@@ -69,6 +73,43 @@ const fetchHealthAdvice = () => {
   var data = JSON.stringify({ "age": age });
   xhr.send(data);
 }
+
+const incrementJokeCount = async () => {
+
+  try {
+    const response = await fetch(userUrls.incrementFetchJokeUrl, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data.message)
+    } else {
+      console.log(landingStrings.incrementFetchJokeErr)
+    }
+  } catch (error) {
+    console.error(landingStrings.incrementFetchJokeErr, error.message);
+  }
+};
+
+const incrementHealthCount = async () => {
+  try {
+    const response = await fetch(userUrls.incrementGetHealthTipUrl, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data.message);
+    } else {
+      console.log(landingStrings.incrementHealthTipErr)
+    }
+  } catch (error) {
+    console.error(landingStrings.incrementHealthTipErr, error.message);
+  }
+};
   
   const toggleDropdown = () => {
     var dropdownContent = document.getElementById("dropdownContent");

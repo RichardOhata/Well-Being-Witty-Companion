@@ -25,21 +25,23 @@ INSERT INTO request_tracking (method, endpoint, request_count, description)
 VALUES 
 ('POST', '/create', 0, 'Registers a new user'),
 ('POST', '/login', 0, 'Logs in a user'),
-('POST', 'users/create', 0, 'Creates a new user'),
-('POST', 'auth/forgot-password', 0, 'Initiates password reset'),
-('POST', 'users/reset-password', 0, 'Resets user password'),
+('POST', '/users/create', 0, 'Creates a new user'),
+('POST', '/auth/forgot-password', 0, 'Initiates password reset'),
+('POST', '/users/reset-password', 0, 'Resets user password'),
+('POST', '/getJoke', 0, 'Gets a joke'),
+('POST', '/getHealthTip', 0, 'Gets a health tip'),
+('POST', '/auth/login', 0, 'Logs in a user'),
 
 ('GET', '/logout', 0, 'Logs out a user'),
-('GET', 'users/getUsers', 0, 'Gets a list of users'),
-('GET', 'users/getRole', 0, 'Gets user roles'),
-('GET', 'users/:id', 0, 'Gets user details by ID'),
-('GET', 'users/getUsers', 0, 'Gets a list of users'),
-('GET', 'auth/profile', 0, 'Gets user profile'),
+('GET', '/users/getUsers', 0, 'Gets a list of users'),
+('GET', '/users/getRole', 0, 'Gets user roles'),
+('GET', '/users/:id', 0, 'Gets user details by ID'),
+('GET', '/auth/profile', 0, 'Gets user profile'),
+('GET', '/stats/getStats', 0, 'Gets api call statistics'),
 
-('PATCH', 'users/:id', 0, 'Updates user details by ID'),
+('PATCH', '/users/:id', 0, 'Updates user details by ID'),
 
-('DELETE', 'users/delete', 0, 'Deletes a user'),
-;
+('DELETE', '/users/delete', 0, 'Deletes a user');
 `;
 
 

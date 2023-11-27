@@ -38,6 +38,9 @@ const userUrls = {
     resetPasswordUrl: createUrl(hostedUrlBase, '/users/reset-password'),
 
     getStatsUrl: createUrl(hostedUrlBase, '/stats/getStats'), 
+    incrementFetchJokeUrl: createUrl(hostedUrlBase, '/stats/incrementFetchJoke'),
+    incrementGetHealthTipUrl: createUrl(hostedUrlBase, '/stats/incrementGetHealthTip'),
+  
 
     // below is for testing from logging in via another server. 
     //loginUrl : "https://comp4537.com/assignments/assignment2/api/COMP4537/witty/login"
