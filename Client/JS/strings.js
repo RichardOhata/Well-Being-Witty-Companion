@@ -42,9 +42,7 @@ const landingStrings = {
     userProfileFail: "Failed to get user profile.",
     profileReqErr: "Error during profile request:",
     userStatusErr: "Error checking user status:",
-    incrementFetchJokeErr: "Error incrementing fetch joke count:",
-    incrementHealthTipErr: "Error incrementing get health tip count:",
-    
+    apiUsage: "Your API usage count: "
 }
 
 const resetPasswordStrings = {

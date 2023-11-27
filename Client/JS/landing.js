@@ -42,6 +42,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         fetchHealthAdvice();
         incrementHealthCount();
       });
+
+      getAPICount();
   });
   
   const fetchJoke = () => {
@@ -53,6 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
             document.getElementById('jokeDisplay').innerText = response.joke;
+            getAPICount();
         }
     };
     var data = JSON.stringify({ "age": age });
@@ -68,6 +71,7 @@ const fetchHealthAdvice = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
           var response = JSON.parse(xhr.responseText);
           document.getElementById('adviceDisplay').innerText = response.advice; // Update the element ID
+          getAPICount();
       }
   };
   var data = JSON.stringify({ "age": age });
@@ -189,4 +193,28 @@ const incrementHealthCount = async () => {
       return null;
     }
   };
+
+  const getAPICount = async () => {
+    try {
+      const response = await fetch(userUrls.getProfileUrl, {
+        method: "GET",
+        credentials: "include",
+      });
+  
+      if (response.ok) {
+        const profileData = await response.json();
+        const api_calls = document.getElementById("api-calls")
+        api_calls.textContent = landingStrings.apiUsage + profileData.apiCalls
+        console.log(landingStrings.userProfile, profileData);
+      } else {
+        const errorData = await response.json();
+        console.error(
+          `${landingStrings.userProfileFail} ${landingStrings.errors} 
+          ${errorData.message || landingStrings.unknownErr}`
+        );
+      }
+    } catch (error) {
+      console.error(landingStrings.profileReqErr, error.message);
+    }
+  }
   
