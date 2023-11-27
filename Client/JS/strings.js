@@ -41,7 +41,8 @@ const landingStrings = {
     userProfile: "User profile:",
     userProfileFail: "Failed to get user profile.",
     profileReqErr: "Error during profile request:",
-    userStatusErr: "Error checking user status:"
+    userStatusErr: "Error checking user status:",
+    apiUsage: "Your API usage count: "
 }
 
 const resetPasswordStrings = {

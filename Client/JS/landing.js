@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     fetchHealthAdviceButton.addEventListener("click",  () => {
         fetchHealthAdvice();
       });
+
+      getAPICount();
   });
   
   const fetchJoke = () => {
@@ -148,4 +150,28 @@ const fetchHealthAdvice = () => {
       return null;
     }
   };
+
+  const getAPICount = async () => {
+    try {
+      const response = await fetch(userUrls.getProfileUrl, {
+        method: "GET",
+        credentials: "include",
+      });
+  
+      if (response.ok) {
+        const profileData = await response.json();
+        const api_calls = document.getElementById("api-calls")
+        api_calls.textContent = landingStrings.apiUsage + profileData.apiCalls
+        console.log(landingStrings.userProfile, profileData);
+      } else {
+        const errorData = await response.json();
+        console.error(
+          `${landingStrings.userProfileFail} ${landingStrings.errors} 
+          ${errorData.message || landingStrings.unknownErr}`
+        );
+      }
+    } catch (error) {
+      console.error(landingStrings.profileReqErr, error.message);
+    }
+  }
   
