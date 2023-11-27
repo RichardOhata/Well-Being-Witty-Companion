@@ -6,7 +6,7 @@ const createUrl = (base, endpoint) => `${base}${endpoint}`;
 //to switch between the hosted and local urls, just swap the names of the objects
 // e.g switch userUrls1 and userUrls
 // User-related URLs
-const userUrls = {
+const userUrls1 = {
   getUsersUrl: createUrl(localUrlBase, '/users/getUsers'), 
   deleteUserUrl: createUrl(localUrlBase, '/users/delete'), // {id}
   createUserUrl: createUrl(localUrlBase, '/users/create'), // {username, email, password}
@@ -26,7 +26,7 @@ const userUrls = {
 };
 
 // Hosted URLs
-const userUrls1 = {
+const userUrls = {
     getUsersUrl: createUrl(hostedUrlBase, '/users/getUsers'),
     deleteUserUrl: createUrl(hostedUrlBase, '/users/delete'),
     createUserUrl: createUrl(hostedUrlBase, '/users/create'),

@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await getAPICount();
   });
   
-  const fetchJoke = async() => {
+  const fetchJoke = () => {
     var age = document.getElementById('ageInput').value;
     var xhr = new XMLHttpRequest();
     xhr.open("POST", landingStrings.endpoint + landingStrings.jokeResource, true);
@@ -55,12 +55,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
             document.getElementById('jokeDisplay').innerText = response.joke;
-            
+            getAPICount();
         }
     };
     var data = JSON.stringify({ "age": age });
     xhr.send(data);
-    await getAPICount();
 }
 
 const fetchHealthAdvice = async() => {
@@ -72,11 +71,11 @@ const fetchHealthAdvice = async() => {
       if (xhr.readyState === 4 && xhr.status === 200) {
           var response = JSON.parse(xhr.responseText);
           document.getElementById('adviceDisplay').innerText = response.advice; // Update the element ID
+          getAPICount()
       }
   };
   var data = JSON.stringify({ "age": age });
   xhr.send(data);
-  await getAPICount();
 }
 
 const incrementJokeCount = async () => {
