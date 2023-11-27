@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
             document.getElementById('jokeDisplay').innerText = response.joke;
+            getAPICount();
         }
     };
     var data = JSON.stringify({ "age": age });
@@ -66,6 +67,7 @@ const fetchHealthAdvice = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
           var response = JSON.parse(xhr.responseText);
           document.getElementById('adviceDisplay').innerText = response.advice; // Update the element ID
+          getAPICount();
       }
   };
   var data = JSON.stringify({ "age": age });
