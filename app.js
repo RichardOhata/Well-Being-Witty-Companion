@@ -1,3 +1,5 @@
+import {serverStrings} from './strings'
+
 require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql');
@@ -25,25 +27,25 @@ const db = mysql.createConnection({
 
 db.connect((err) => {
     if (err) {
-        console.error('Error connecting to the database:', err);
+        console.error(serverStrings.dbConnectErr , err);
     } else {
-        console.log('Connected to the database');
+        console.log(serverStrings.dbConnectSuccess);
     }
 });
 
 db.query(query.createUserTable, (err, result) => {
     if (err) {
-        console.error('Error creating the table:', err);
+        console.error(serverStrings.dbTableErr, err);
     } else {
-        console.log('Table "users" created successfully');
+        console.log(serverStrings.userTableSuccess);
     }
 });
 
 db.query(query.createReqTrackingTable, (err, result) => {
     if (err) {
-        console.error('Error creating the table:', err);
+        console.error(serverStrings.dbTableErr, err);
     } else {
-        console.log('Table "requestTracking" created successfully');
+        console.log(serverStrings.requestTableSuccess);
     }
 });
 
@@ -61,18 +63,16 @@ router.use(function (req, res, next) {
 
 const jwtAuthentication = (req, res, next) => {
     const token = req.cookies.access_token;
-    console.log("token", token)
     try {
         const payload = jwt.verify(token, secretKey);
-        console.log("Payload", payload)
         req.payload = payload
         next()
     } catch (err) {
         res.clearCookie('token');
         res.status(401).json({
             success: false,
-            error: "Unauthorized",
-            message: "Failed to authenticate token.",
+            error: serverStrings.unauthorized,
+            message: serverStrings.authFail,
         });
     }
 }
@@ -96,8 +96,8 @@ router.post('/create', (req, res) => {
         if (err) {
             const response = {
                 success: false,
-                error: "User conflict",
-                message: `The email ${req.body.email} already exists.`,
+                error: serverStrings.userConflict,
+                message: `${serverStrings.email} ${req.body.email} ${serverStrings.exists}`,
             };
 
             res.status(409).json(response);
@@ -105,7 +105,7 @@ router.post('/create', (req, res) => {
           incrementReqCount('POST', '/create')
             const response = {
                 success: true,
-                message: 'User registered successfully',
+                message: serverStrings.userRegisterSuccess,
                 username: req.body.username,
                 email: req.body.email,
             };
@@ -120,16 +120,16 @@ router.post('/login', (req, res) => {
         if (err) {
             const response = {
                 success: false,
-                error: "Database error",
-                message: "Error querying the database.",
+                error: serverStrings.dbError,
+                message: serverStrings.dbErrMsg,
             };
 
             res.status(500).json(response);
         } else if (result.length === 0) {
             const response = {
                 success: false,
-                error: "Invalid credentials",
-                message: "No such user exists.",
+                error: serverStrings.invalidCred,
+                message: serverStrings.userExists,
             };
             res.status(401).json(response);
         } else {
@@ -146,10 +146,9 @@ router.post('/login', (req, res) => {
                 })
                 const response = {
                     success: true,
-                    message: 'Login successful',
+                    message: serverStrings.loginSuccess,
                     user: result[0], // Assuming result is an array with at most one user
                 };
-                console.log("Login successful")
                 incrementReqCount('POST', '/login')
                 res.cookie('access_token', access_token, {
                     path:"/",
@@ -162,8 +161,8 @@ router.post('/login', (req, res) => {
             } else {
                 const response = {
                     success: false,
-                    error: "Invalid credentials",
-                    message: "Email or password is incorrect",
+                    error: serverStrings.invalidCred,
+                    message: serverStrings.incorrectCred,
                 };
                 res.status(401).json(response);
             }
@@ -179,8 +178,7 @@ router.get('/logout', (req, res) => {
         expires: new Date(0) 
     });
     incrementReqCount('GET', '/logout')
-    res.status(200).json({ message: 'Logged out successfully' });
-    console.log("Logged out successfully")
+    res.status(200).json({ message: serverStrings.logoutSuccess });
 });
 
 // Example of how to access payload data 
@@ -197,8 +195,8 @@ router.get('/getStats', jwtAuthentication, (req, res) => {
         if (err) {
             const response = {
                 success: false,
-                error: "Database error",
-                message: "Error querying the database.",
+                error: serverStrings.dbError,
+                message:serverStrings.dbErrMsg,
             };
             res.status(500).json(response);
     } else {
@@ -208,10 +206,10 @@ router.get('/getStats', jwtAuthentication, (req, res) => {
 })
 
 router.get('/', (req, res) => {
-    res.send('Hello, World!');
+    res.send(serverStrings.helloWorld);
   });
 
 app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
+    console.log(serverStrings.serverStartup);
   });
   
