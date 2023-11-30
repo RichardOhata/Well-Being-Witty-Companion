@@ -4,7 +4,7 @@ const createUserTable = `
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    apicalls INT DEFAULT 0,
+    apiCalls INT DEFAULT 0,
     admin BOOLEAN DEFAULT FALSE
 );`
 

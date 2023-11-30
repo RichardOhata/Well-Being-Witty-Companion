@@ -15,11 +15,13 @@ const userUrls1 = {
   forgotPasswordUrl: createUrl(localUrlBase, '/auth/forgot-password'), // {email}
   logoutUrl: createUrl(localUrlBase, '/auth/logout'),
   getProfileUrl: createUrl(localUrlBase, '/auth/profile'), 
-  getRoleUrl: createUrl(localUrlBase, '/users/getRole'),
+  getInfoUrl: createUrl(localUrlBase, '/users/getInfo'),
   loginUrl: createUrl(localUrlBase, '/auth/login'), // {email}
   resetPasswordUrl: createUrl(localUrlBase, '/users/reset-password'), // {password}
   
   getStatsUrl: createUrl(localUrlBase, '/stats/getStats'), 
+  incrementFetchJokeUrl: createUrl(localUrlBase, '/stats/incrementFetchJoke'),
+  incrementGetHealthTipUrl: createUrl(localUrlBase, '/stats/incrementGetHealthTip'),
 
 };
 
@@ -33,14 +35,14 @@ const userUrls = {
     forgotPasswordUrl: createUrl(hostedUrlBase, '/auth/forgot-password'),
     logoutUrl: createUrl(hostedUrlBase, '/auth/logout'),
     getProfileUrl: createUrl(hostedUrlBase, '/auth/profile'),
-    getRoleUrl: createUrl(hostedUrlBase, '/users/getRole'),
+    getInfoUrl: createUrl(hostedUrlBase, '/users/getInfo'),
     loginUrl: createUrl(hostedUrlBase, '/auth/login'),
     resetPasswordUrl: createUrl(hostedUrlBase, '/users/reset-password'),
 
     getStatsUrl: createUrl(hostedUrlBase, '/stats/getStats'), 
     incrementFetchJokeUrl: createUrl(hostedUrlBase, '/stats/incrementFetchJoke'),
     incrementGetHealthTipUrl: createUrl(hostedUrlBase, '/stats/incrementGetHealthTip'),
-  
+
 
     // below is for testing from logging in via another server. 
     //loginUrl : "https://comp4537.com/assignments/assignment2/api/COMP4537/witty/login"

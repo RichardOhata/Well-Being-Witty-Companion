@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         fetchHealthAdvice();
         incrementHealthCount();
       });
-
-      getAPICount();
+      
+    await getAPICount();
   });
   
   const fetchJoke = () => {
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     xhr.send(data);
 }
 
-const fetchHealthAdvice = () => {
+const fetchHealthAdvice = async() => {
   var age = document.getElementById('ageInput2').value;
   var xhr = new XMLHttpRequest();
   xhr.open("POST", landingStrings.endpoint + landingStrings.healthResource, true); // Update the endpoint URL
@@ -71,7 +71,7 @@ const fetchHealthAdvice = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
           var response = JSON.parse(xhr.responseText);
           document.getElementById('adviceDisplay').innerText = response.advice; // Update the element ID
-          getAPICount();
+          getAPICount()
       }
   };
   var data = JSON.stringify({ "age": age });
@@ -172,20 +172,17 @@ const incrementHealthCount = async () => {
     window.location.href = "admin.html";
   }; 
   
-  
-  
-  // Placeholder function, replace with your actual authorization logic
   const isAdmin = async () => {
     try {
-      const response = await fetch(userUrls.getRoleUrl, {
+      const response = await fetch(userUrls.getInfoUrl, {
         method: "GET",
         credentials: "include",
       });
       if (response.ok) {
         const data = await response.json();
-        const isAdmin = data && data.admin === 1;
-        console.log(isAdmin);
-  
+        console.log(data)
+        const isAdmin = data && data.admin === true;
+        console.log(isAdmin);        
         return isAdmin;
       }
     } catch (error) {
@@ -196,16 +193,16 @@ const incrementHealthCount = async () => {
 
   const getAPICount = async () => {
     try {
-      const response = await fetch(userUrls.getProfileUrl, {
+      const response = await fetch(userUrls.getInfoUrl, {
         method: "GET",
         credentials: "include",
       });
   
       if (response.ok) {
-        const profileData = await response.json();
+        const data = await response.json();
         const api_calls = document.getElementById("api-calls")
-        api_calls.textContent = landingStrings.apiUsage + profileData.apiCalls
-        console.log(landingStrings.userProfile, profileData);
+        api_calls.textContent = landingStrings.apiUsage + data.apiCalls
+        console.log(landingStrings.userProfile, data);
       } else {
         const errorData = await response.json();
         console.error(
